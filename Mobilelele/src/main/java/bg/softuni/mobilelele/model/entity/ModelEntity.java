@@ -13,9 +13,9 @@ public class ModelEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CategoryEnum category;
-    @Column(nullable = false)
+    @Column(name = "image_url", nullable = false, length = 512)
     private String imageUrl;
-    @Column(nullable = false)
+    @Column(name = "start_year", nullable = false)
     private Integer startYear;
     private Integer endYear;
     @ManyToOne
