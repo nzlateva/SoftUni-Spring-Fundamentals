@@ -19,7 +19,7 @@ public class UserEntity extends BaseEntity {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
     @ManyToMany
-    private List<UserRole> roles;
+    private List<UserRoleEntity> roles;
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
@@ -60,11 +60,11 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
-    public List<UserRole> getRoles() {
+    public List<UserRoleEntity> getRoles() {
         return roles;
     }
 
-    public UserEntity setRoles(List<UserRole> roles) {
+    public UserEntity setRoles(List<UserRoleEntity> roles) {
         this.roles = roles;
         return this;
     }
