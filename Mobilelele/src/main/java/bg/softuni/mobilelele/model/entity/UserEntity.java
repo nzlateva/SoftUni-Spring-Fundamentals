@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -16,10 +16,12 @@ public class UserEntity extends BaseEntity {
     private String firstName;
     @Column(name = "last_name", nullable = false)
     private String lastName;
+    @Column(nullable = false)
+    private String password;
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
     @ManyToMany
-    private List<UserRoleEntity> roles;
+    private Set<UserRoleEntity> roles;
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
@@ -51,6 +53,15 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public UserEntity setPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
     public Boolean getActive() {
         return isActive;
     }
@@ -60,11 +71,11 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
-    public List<UserRoleEntity> getRoles() {
+    public Set<UserRoleEntity> getRoles() {
         return roles;
     }
 
-    public UserEntity setRoles(List<UserRoleEntity> roles) {
+    public UserEntity setRoles(Set<UserRoleEntity> roles) {
         this.roles = roles;
         return this;
     }
