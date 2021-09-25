@@ -80,6 +80,11 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
+    public UserEntity addRole(UserRoleEntity role) {
+        this.roles.add(role);
+        return this;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }

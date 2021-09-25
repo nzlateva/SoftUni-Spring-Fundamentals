@@ -1,12 +1,15 @@
 package bg.softuni.mobilelele.web;
 
 import bg.softuni.mobilelele.model.binding.UserLoginBindingModel;
+import bg.softuni.mobilelele.model.binding.UserRegisterBindingModel;
+import bg.softuni.mobilelele.model.entity.enums.UserRoleEnum;
 import bg.softuni.mobilelele.model.service.UserServiceModel;
 import bg.softuni.mobilelele.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +46,22 @@ public class UserController {
                 userServiceModel.getUsername(),
                 loginSuccessful);
 
-        return "redirect:/index";
+        return "redirect:/";
+    }
+
+    @GetMapping("/register")
+    public String register() {
+        return "auth-register";
+    }
+
+    @PostMapping("/register")
+    public String registerConfirm(UserRegisterBindingModel userRegisterBindingModel) {
+
+        UserServiceModel userServiceModel = modelMapper
+                .map(userRegisterBindingModel, UserServiceModel.class);
+
+        userService.register(userServiceModel);
+
+        return "redirect:/";
     }
 }

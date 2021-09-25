@@ -7,4 +7,6 @@ public interface UserService {
     void initializeUsers();
 
     boolean login(UserServiceModel userServiceModel);
+
+    void register(UserServiceModel userServiceModel);
 }
