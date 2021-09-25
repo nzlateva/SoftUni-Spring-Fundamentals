@@ -44,4 +44,9 @@ public abstract class BaseEntity {
     public void beforeCreate() {
         setCreated(Instant.now());
     }
+
+    @PostPersist
+    public void afterUpdate() {
+        setModified(Instant.now());
+    }
 }

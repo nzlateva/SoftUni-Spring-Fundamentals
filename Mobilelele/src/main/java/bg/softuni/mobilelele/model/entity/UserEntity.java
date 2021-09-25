@@ -22,7 +22,7 @@ public class UserEntity extends BaseEntity {
     private Boolean isActive;
     @ManyToMany
     private Set<UserRoleEntity> roles;
-    @Column(name = "image_url", nullable = false)
+    @Column(name = "image_url")
     private String imageUrl;
 
 
