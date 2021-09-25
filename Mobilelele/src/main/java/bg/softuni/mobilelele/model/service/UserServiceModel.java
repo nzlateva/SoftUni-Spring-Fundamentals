@@ -7,6 +7,7 @@ public class UserServiceModel {
     private String username;
     private String firstName;
     private String lastName;
+    private String password;
     private Boolean isActive;
     private List<UserRoleServiceModel> roles;
     private String imageUrl;
@@ -35,6 +36,15 @@ public class UserServiceModel {
 
     public UserServiceModel setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public UserServiceModel setPassword(String password) {
+        this.password = password;
         return this;
     }
 

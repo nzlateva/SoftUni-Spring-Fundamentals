@@ -1,10 +1,13 @@
 package bg.softuni.mobilelele.service.impl;
 
 import bg.softuni.mobilelele.model.entity.UserEntity;
+import bg.softuni.mobilelele.model.service.UserServiceModel;
 import bg.softuni.mobilelele.repository.UserRepository;
 import bg.softuni.mobilelele.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -43,8 +46,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean login(String username, String password) {
+    public boolean login(UserServiceModel userServiceModel) {
 
-        return false;
+        Optional<UserEntity> userEntity = userRepository
+                .findByUsername(userServiceModel.getUsername());
+
+        if (userEntity.isEmpty()) {
+            return false;
+        }
+
+        return passwordEncoder.matches(
+                userServiceModel.getPassword(),
+                userEntity.get().getPassword()
+        );
     }
 }

@@ -1,8 +1,10 @@
 package bg.softuni.mobilelele.service;
 
+import bg.softuni.mobilelele.model.service.UserServiceModel;
+
 public interface UserService {
 
     void initializeUsers();
 
-    boolean login(String username, String password);
+    boolean login(UserServiceModel userServiceModel);
 }
