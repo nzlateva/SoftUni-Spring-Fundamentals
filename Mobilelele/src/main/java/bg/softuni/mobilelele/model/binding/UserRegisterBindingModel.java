@@ -2,13 +2,18 @@ package bg.softuni.mobilelele.model.binding;
 
 import bg.softuni.mobilelele.model.entity.UserRoleEntity;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 public class UserRegisterBindingModel {
 
+    @NotEmpty
     private String username;
+    @NotEmpty
     private String firstName;
+    @NotEmpty
     private String lastName;
+    @NotEmpty
     private String password;
     private Set<UserRoleEntity> roles;
 

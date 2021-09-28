@@ -2,17 +2,20 @@ package bg.softuni.mobilelele.web;
 
 import bg.softuni.mobilelele.model.binding.UserLoginBindingModel;
 import bg.softuni.mobilelele.model.binding.UserRegisterBindingModel;
-import bg.softuni.mobilelele.model.entity.enums.UserRoleEnum;
 import bg.softuni.mobilelele.model.service.UserServiceModel;
 import bg.softuni.mobilelele.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/users")
@@ -27,6 +30,11 @@ public class UserController {
     public UserController(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
         this.modelMapper = modelMapper;
+    }
+
+    @ModelAttribute("userRegisterBindingModel")
+    public UserRegisterBindingModel userRegisterBindingModel() {
+        return new UserRegisterBindingModel();
     }
 
     @GetMapping("/login")
@@ -55,7 +63,16 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registerConfirm(UserRegisterBindingModel userRegisterBindingModel) {
+    public String registerConfirm(@Valid UserRegisterBindingModel userRegisterBindingModel,
+                                  BindingResult bindingResult,
+                                  RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel", bindingResult);
+
+            return "redirect:/users/register";
+        }
 
         UserServiceModel userServiceModel = modelMapper
                 .map(userRegisterBindingModel, UserServiceModel.class);

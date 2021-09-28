@@ -70,6 +70,7 @@
     <h2 class="text-center text-white">Register User</h2>
     <form method="POST"
           th:action="@{/users/register}"
+          th:object="${userRegisterBindingModel}"
           class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
         <div class="row">
             <div class="form-group col-md-6 mb-3">
