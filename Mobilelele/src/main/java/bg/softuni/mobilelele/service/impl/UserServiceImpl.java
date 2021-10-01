@@ -32,13 +32,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public void initializeUsers() {
         if (userRepository.count() == 0) {
+            UserRoleEntity adminRole = userRoleRepository.findByRole(UserRoleEnum.ADMIN)
+                    .orElseThrow(IllegalArgumentException::new);
+
+            UserRoleEntity userRole = userRoleRepository.findByRole(UserRoleEnum.USER)
+                    .orElseThrow(IllegalArgumentException::new);
+
             UserEntity admin = new UserEntity();
             admin
                     .setUsername("admin")
                     .setPassword(passwordEncoder.encode("123"))
                     .setFirstName("Admin")
                     .setLastName("Adminov")
-                    .setActive(true);
+                    .setActive(true)
+                    .setRoles(Set.of(adminRole, userRole));
 
             userRepository.save(admin);
 
@@ -48,7 +55,8 @@ public class UserServiceImpl implements UserService {
                     .setPassword(passwordEncoder.encode("123"))
                     .setFirstName("User")
                     .setLastName("Userov")
-                    .setActive(true);
+                    .setActive(true)
+                    .setRoles(Set.of(userRole));
 
             userRepository.save(user);
         }
