@@ -54,11 +54,17 @@ public class UserController {
                 userServiceModel.getUsername(),
                 loginSuccessful);
 
-        if(loginSuccessful) {
+        if (loginSuccessful) {
             return "redirect:/";
         }
 
         return "redirect:/users/login";
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        userService.logout();
+        return "redirect:/";
     }
 
     @GetMapping("/register")
