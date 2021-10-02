@@ -7,6 +7,7 @@ import bg.softuni.mobilelele.model.service.UserServiceModel;
 import bg.softuni.mobilelele.repository.UserRepository;
 import bg.softuni.mobilelele.repository.UserRoleRepository;
 import bg.softuni.mobilelele.service.UserService;
+import bg.softuni.mobilelele.user.CurrentUser;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,12 +22,14 @@ public class UserServiceImpl implements UserService {
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final CurrentUser currentUser;
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper, CurrentUser currentUser) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -69,13 +72,28 @@ public class UserServiceImpl implements UserService {
                 .findByUsername(userServiceModel.getUsername());
 
         if (userEntity.isEmpty()) {
+            logout();
             return false;
         }
 
-        return passwordEncoder.matches(
+        boolean success = passwordEncoder.matches(
                 userServiceModel.getPassword(),
-                userEntity.get().getPassword()
-        );
+                userEntity.get().getPassword());
+
+        if (success) {
+            UserEntity loggedInUser = userEntity.get();
+            currentUser
+                    .setLoggedIn(true)
+                    .setUsername(loggedInUser.getUsername())
+                    .setFirstName(loggedInUser.getFirstName())
+                    .setLastName(loggedInUser.getLastName());
+
+            loggedInUser
+                    .getRoles()
+                    .forEach(role -> currentUser.addRole(role.getRole()));
+        }
+
+        return success;
     }
 
     @Override
@@ -100,5 +118,10 @@ public class UserServiceImpl implements UserService {
                 .setRoles(Set.of(userRole));
 
         userRepository.save(user);
+    }
+
+    @Override
+    public void logout() {
+        currentUser.clear();
     }
 }

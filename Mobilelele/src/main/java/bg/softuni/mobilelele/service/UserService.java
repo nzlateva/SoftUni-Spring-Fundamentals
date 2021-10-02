@@ -9,4 +9,6 @@ public interface UserService {
     boolean login(UserServiceModel userServiceModel);
 
     void register(UserServiceModel userServiceModel);
+
+    void logout();
 }
