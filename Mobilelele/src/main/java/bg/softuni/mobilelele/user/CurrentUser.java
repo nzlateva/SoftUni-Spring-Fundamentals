@@ -11,18 +11,18 @@ import java.util.Set;
 @SessionScope
 public class CurrentUser {
 
-    private boolean LoggedIn;
+    private boolean loggedIn;
     private String username;
     private String firstName;
     private String lastName;
     private Set<UserRoleEnum> roles = new HashSet<>();
 
     public boolean isLoggedIn() {
-        return LoggedIn;
+        return loggedIn;
     }
 
     public CurrentUser setLoggedIn(boolean loggedIn) {
-        LoggedIn = loggedIn;
+        this.loggedIn = loggedIn;
         return this;
     }
 
