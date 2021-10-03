@@ -13,7 +13,7 @@ public class Comment extends BaseEntity {
     @Column(nullable = false)
     private Instant created;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String textContent;
 
     @ManyToOne

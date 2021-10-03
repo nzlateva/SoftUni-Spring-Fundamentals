@@ -20,7 +20,7 @@ public class Message extends BaseEntity {
     private UserEntity author;
 
     @ManyToOne
-    private UserEntity author;
+    private UserEntity recipient;
 
 
     public Message() {
@@ -50,6 +50,15 @@ public class Message extends BaseEntity {
 
     public Message setAuthor(UserEntity author) {
         this.author = author;
+        return this;
+    }
+
+    public UserEntity getRecipient() {
+        return recipient;
+    }
+
+    public Message setRecipient(UserEntity recipient) {
+        this.recipient = recipient;
         return this;
     }
 }
