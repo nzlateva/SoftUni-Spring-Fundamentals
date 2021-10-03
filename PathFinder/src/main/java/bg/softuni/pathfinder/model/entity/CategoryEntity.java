@@ -14,6 +14,7 @@ public class CategoryEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private CategoryEnum name;
 
+
     public CategoryEntity() {
     }
 
