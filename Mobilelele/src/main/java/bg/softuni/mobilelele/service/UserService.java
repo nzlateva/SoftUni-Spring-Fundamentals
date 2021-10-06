@@ -11,4 +11,5 @@ public interface UserService {
     void register(UserServiceModel userServiceModel);
 
     void logout();
+
 }

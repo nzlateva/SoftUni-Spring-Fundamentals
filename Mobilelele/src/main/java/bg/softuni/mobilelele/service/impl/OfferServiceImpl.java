@@ -3,12 +3,13 @@ package bg.softuni.mobilelele.service.impl;
 import bg.softuni.mobilelele.model.entity.OfferEntity;
 import bg.softuni.mobilelele.model.entity.enums.EngineEnum;
 import bg.softuni.mobilelele.model.entity.enums.TransmissionEnum;
-import bg.softuni.mobilelele.model.view.ModelViewModel;
+import bg.softuni.mobilelele.model.view.OfferDetailsViewModel;
 import bg.softuni.mobilelele.model.view.OfferSummaryViewModel;
 import bg.softuni.mobilelele.repository.ModelRepository;
 import bg.softuni.mobilelele.repository.OfferRepository;
 import bg.softuni.mobilelele.repository.UserRepository;
 import bg.softuni.mobilelele.service.OfferService;
+import bg.softuni.mobilelele.user.CurrentUser;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,14 @@ public class OfferServiceImpl implements OfferService {
     private final ModelRepository modelRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final CurrentUser currentUser;
 
-    public OfferServiceImpl(OfferRepository offerRepository, ModelRepository modelRepository, UserRepository userRepository, ModelMapper modelMapper) {
+    public OfferServiceImpl(OfferRepository offerRepository, ModelRepository modelRepository, UserRepository userRepository, ModelMapper modelMapper, CurrentUser currentUser) {
         this.offerRepository = offerRepository;
         this.modelRepository = modelRepository;
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -69,15 +72,29 @@ public class OfferServiceImpl implements OfferService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public OfferDetailsViewModel findById(Long id) {
+        OfferEntity offerEntity = offerRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Offer with ID: " + id + " not found"
+                ));
+
+        return modelMapper
+                .map(offerEntity, OfferDetailsViewModel.class);
+    }
+
+    @Override
+    public boolean isLoggedUserOwner(String username) {
+        if (currentUser.getUsername() == null) {
+            return false;
+        }
+
+        return currentUser.getUsername().equals(username);
+    }
+
     private OfferSummaryViewModel mapToModel(OfferEntity offerEntity) {
-        OfferSummaryViewModel summaryViewModel = modelMapper
+        return modelMapper
                 .map(offerEntity, OfferSummaryViewModel.class);
-
-        ModelViewModel modelViewModel = modelMapper
-                .map(offerEntity.getModel(), ModelViewModel.class);
-
-        summaryViewModel.setModel(modelViewModel);
-
-        return summaryViewModel;
     }
 }
