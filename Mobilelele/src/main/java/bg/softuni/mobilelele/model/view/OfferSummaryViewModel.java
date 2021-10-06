@@ -14,7 +14,7 @@ public class OfferSummaryViewModel {
     private EngineEnum engine;
     private TransmissionEnum transmission;
     private Integer year;
-    private String model;
+    private ModelViewModel model;
 
 
     public OfferSummaryViewModel() {
@@ -83,11 +83,11 @@ public class OfferSummaryViewModel {
         return this;
     }
 
-    public String getModel() {
+    public ModelViewModel getModel() {
         return model;
     }
 
-    public OfferSummaryViewModel setModel(String model) {
+    public OfferSummaryViewModel setModel(ModelViewModel model) {
         this.model = model;
         return this;
     }

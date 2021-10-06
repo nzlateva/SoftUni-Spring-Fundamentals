@@ -3,6 +3,7 @@ package bg.softuni.mobilelele.service.impl;
 import bg.softuni.mobilelele.model.entity.OfferEntity;
 import bg.softuni.mobilelele.model.entity.enums.EngineEnum;
 import bg.softuni.mobilelele.model.entity.enums.TransmissionEnum;
+import bg.softuni.mobilelele.model.view.ModelViewModel;
 import bg.softuni.mobilelele.model.view.OfferSummaryViewModel;
 import bg.softuni.mobilelele.repository.ModelRepository;
 import bg.softuni.mobilelele.repository.OfferRepository;
@@ -72,7 +73,10 @@ public class OfferServiceImpl implements OfferService {
         OfferSummaryViewModel summaryViewModel = modelMapper
                 .map(offerEntity, OfferSummaryViewModel.class);
 
-        summaryViewModel.setModel(offerEntity.getModel().getName());
+        ModelViewModel modelViewModel = modelMapper
+                .map(offerEntity.getModel(), ModelViewModel.class);
+
+        summaryViewModel.setModel(modelViewModel);
 
         return summaryViewModel;
     }

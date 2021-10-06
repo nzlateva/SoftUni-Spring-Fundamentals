@@ -21,8 +21,10 @@
                 <img class="card-img-top" th:src="*{getImageUrl()}" alt="Car image">
             </div>
             <div class="card-body pb-1">
-                <h5 class="card-title">
-                    Offer year Brand name Model name</h5>
+                <h5 class="card-title">Offer
+                    <span th:text="*{year}">Year </span>
+                    <span th:text="*{getModel().getBrandName()}">Brand name </span>
+                    <span th:text="*{getModel().getName()}">Model name</span></h5>
             </div>
             <ul class="offer-details list-group list-group-flush">
                 <li class="list-group-item">
