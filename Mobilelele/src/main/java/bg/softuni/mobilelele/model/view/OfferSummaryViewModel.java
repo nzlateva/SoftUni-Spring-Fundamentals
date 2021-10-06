@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 
 public class OfferSummaryViewModel {
 
+    private Long id;
     private String imageUrl;
     private Integer mileage;
     private BigDecimal price;
@@ -14,6 +15,19 @@ public class OfferSummaryViewModel {
     private TransmissionEnum transmission;
     private Integer year;
     private String model;
+
+
+    public OfferSummaryViewModel() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public OfferSummaryViewModel setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public String getImageUrl() {
         return imageUrl;
