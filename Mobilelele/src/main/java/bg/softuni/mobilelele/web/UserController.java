@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
+
 @Controller
 @RequestMapping("/users")
 public class UserController {
@@ -80,6 +81,13 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel", bindingResult);
+
+            return "redirect:/users/register";
+        }
+
+        if (userService.existsByUsername(userRegisterBindingModel.getUsername())) {
+            redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
+            redirectAttributes.addFlashAttribute("userExistsError", true);
 
             return "redirect:/users/register";
         }

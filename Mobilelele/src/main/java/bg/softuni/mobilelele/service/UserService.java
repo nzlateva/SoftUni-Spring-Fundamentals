@@ -12,4 +12,5 @@ public interface UserService {
 
     void logout();
 
+    boolean existsByUsername(String username);
 }

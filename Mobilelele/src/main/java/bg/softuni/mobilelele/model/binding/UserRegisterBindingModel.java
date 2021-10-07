@@ -1,21 +1,26 @@
 package bg.softuni.mobilelele.model.binding;
 
-import bg.softuni.mobilelele.model.entity.UserRoleEntity;
-
 import javax.validation.constraints.NotEmpty;
-import java.util.Set;
+import javax.validation.constraints.Size;
 
 public class UserRegisterBindingModel {
 
-    @NotEmpty
+    @NotEmpty(message = "Please enter username.")
+    @Size(min = 2, max = 20, message = "Username should be between 2 and 20 characters long.")
     private String username;
-    @NotEmpty
+
+    @NotEmpty(message = "Please enter first name.")
+    @Size(min = 2, max = 20, message = "First name should be between 2 and 20 characters long.")
     private String firstName;
-    @NotEmpty
+
+    @NotEmpty(message = "Please enter last name.")
+    @Size(min = 2, max = 20, message = "Last name should be between 2 and 20 characters long.")
     private String lastName;
-    @NotEmpty
+
+    @NotEmpty(message = "Please enter password.")
+    @Size(min = 2, max = 20, message = "Password should be between 2 and 20 characters long.")
     private String password;
-    private Set<UserRoleEntity> roles;
+
 
     public String getUsername() {
         return username;
@@ -53,12 +58,4 @@ public class UserRegisterBindingModel {
         return this;
     }
 
-    public Set<UserRoleEntity> getRoles() {
-        return roles;
-    }
-
-    public UserRegisterBindingModel setRoles(Set<UserRoleEntity> roles) {
-        this.roles = roles;
-        return this;
-    }
 }

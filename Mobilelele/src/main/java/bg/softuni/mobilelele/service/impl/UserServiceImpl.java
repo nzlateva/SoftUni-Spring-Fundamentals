@@ -82,47 +82,56 @@ public class UserServiceImpl implements UserService {
 
         if (success) {
             UserEntity loggedInUser = userEntity.get();
-            currentUser
-                    .setLoggedIn(true)
-                    .setUsername(loggedInUser.getUsername())
-                    .setFirstName(loggedInUser.getFirstName())
-                    .setLastName(loggedInUser.getLastName());
-
-            loggedInUser
-                    .getRoles()
-                    .forEach(role -> currentUser.addRole(role.getRole()));
+            login(loggedInUser);
         }
 
         return success;
     }
 
     @Override
-    public void register(UserServiceModel userServiceModel) {
-        Optional<UserEntity> userEntity = userRepository
-                .findByUsername(userServiceModel.getUsername());
-
-        if (userEntity.isPresent()) {
-            throw new IllegalStateException(
-                    "User with username " + userServiceModel.getUsername() + " already exists!"
-            );
-        }
-
-        UserEntity user = modelMapper.map(userServiceModel, UserEntity.class);
-        UserRoleEntity userRole = userRoleRepository
-                .findByRole(UserRoleEnum.USER)
-                .orElse(null);
-
-        user
-                .setPassword(passwordEncoder.encode(userServiceModel.getPassword()))
-                .setActive(true)
-                .setRoles(Set.of(userRole));
-
-        userRepository.save(user);
-    }
-
-    @Override
     public void logout() {
         currentUser.clear();
     }
+
+    @Override
+    public void register(UserServiceModel userServiceModel) {
+        UserEntity userEntity = modelMapper.map(userServiceModel, UserEntity.class);
+
+        userEntity.setPassword(
+                passwordEncoder.encode(userServiceModel.getPassword()));
+
+        userEntity.setActive(true);
+
+        UserRoleEntity userRole = userRoleRepository
+                .findByRole(UserRoleEnum.USER)
+                .orElseThrow(() -> new IllegalArgumentException("Role not found"));
+        userEntity.setRoles(Set.of(userRole));
+
+        UserEntity newUser = userRepository.save(userEntity);
+
+        login(newUser);
+    }
+
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository
+                .findByUsernameIgnoreCase(username)
+                .isPresent();
+    }
+
+
+    private void login(UserEntity loggedInUser) {
+        currentUser
+                .setLoggedIn(true)
+                .setUsername(loggedInUser.getUsername())
+                .setFirstName(loggedInUser.getFirstName())
+                .setLastName(loggedInUser.getLastName());
+
+        loggedInUser
+                .getRoles()
+                .forEach(role -> currentUser.addRole(role.getRole()));
+    }
+
 
 }
