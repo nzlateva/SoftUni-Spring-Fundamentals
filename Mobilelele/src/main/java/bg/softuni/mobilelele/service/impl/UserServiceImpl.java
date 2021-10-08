@@ -132,6 +132,4 @@ public class UserServiceImpl implements UserService {
                 .getRoles()
                 .forEach(role -> currentUser.addRole(role.getRole()));
     }
-
-
 }
