@@ -7,6 +7,10 @@ spring:
   sql:
     init:
       mode: always
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:

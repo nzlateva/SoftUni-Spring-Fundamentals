@@ -1,14 +1,18 @@
-package bg.softuni.pathfinder.repository;
+package bg.softuni.coffeeshop.repository;
 
-import bg.softuni.pathfinder.model.entity.UserEntity;
-import bg.softuni.pathfinder.model.entity.UserRoleEntity;
+import bg.softuni.coffeeshop.model.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByUsernameAndPassword(String username, String password);
+
+    @Query("SELECT u FROM UserEntity u ORDER BY size(u.orders) DESC")
+    List<UserEntity> findAllByOrdersCountDesc();
 }

@@ -23,15 +23,19 @@
 
         <div class="row g-3 align-items-center">
 
-            <form
-                    action="/"
-                    method="">
+            <form method="POST"
+                  action="/users/login"
+                  th:object="${userLoginBindingModel}">
                 <div>
+                    <h5 th:if="${isNotExists}"
+                        class="bg-danger">Incorrect username or password
+                    </h5>
                     <div class="col-auto">
                         <label for="inputUsername" class="col-form-label ">Username</label>
                     </div>
                     <div class="col-auto">
-                        <input type="text"
+                        <input th:field="*{username}"
+                               type="text"
                                name="username"
                                required minlength="4" maxlength="20"
                                id="inputUsername"
@@ -44,7 +48,8 @@
                         <label for="inputPassword" class="col-form-label ">Password</label>
                     </div>
                     <div class="col-auto">
-                        <input type="password"
+                        <input th:field="*{password}"
+                               type="password"
                                name="password"
                                required minlength="4" maxlength="20"
                                id="inputPassword" class="form-control"

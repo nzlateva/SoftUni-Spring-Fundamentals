@@ -1,10 +1,9 @@
-package bg.softuni.pathfinder.web;
+package bg.softuni.coffeeshop.web;
 
-import bg.softuni.pathfinder.model.binding.UserLoginBindingModel;
-import bg.softuni.pathfinder.model.binding.UserRegisterBindingModel;
-import bg.softuni.pathfinder.model.service.UserServiceModel;
-import bg.softuni.pathfinder.service.UserService;
-import bg.softuni.pathfinder.user.CurrentUser;
+import bg.softuni.coffeeshop.model.binding.UserLoginBindingModel;
+import bg.softuni.coffeeshop.model.binding.UserRegisterBindingModel;
+import bg.softuni.coffeeshop.model.service.UserServiceModel;
+import bg.softuni.coffeeshop.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -22,14 +21,11 @@ public class UserController {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
-    private final CurrentUser currentUser;
 
-    public UserController(UserService userService, ModelMapper modelMapper, CurrentUser currentUser) {
+    public UserController(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
         this.modelMapper = modelMapper;
-        this.currentUser = currentUser;
     }
-
 
     @ModelAttribute("userLoginBindingModel")
     public UserLoginBindingModel userLoginBindingModel() {
@@ -46,6 +42,11 @@ public class UserController {
         return "login";
     }
 
+    @GetMapping("/register")
+    public String register() {
+        return "register";
+    }
+
     @PostMapping("/login")
     public String loginConfirm(@Valid UserLoginBindingModel userLoginBindingModel,
                                BindingResult bindingResult,
@@ -53,7 +54,7 @@ public class UserController {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes
-                    .addFlashAttribute("userLoginBindingModel")
+                    .addFlashAttribute("userLoginBindingModel", userLoginBindingModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
 
             return "redirect:/users/login";
@@ -67,21 +68,15 @@ public class UserController {
 
         if (userServiceModel == null) {
             redirectAttributes
-                    .addFlashAttribute("userLoginBindingModel")
-                    .addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult)
-                    .addFlashAttribute("isNotExists", true);
+                    .addFlashAttribute("userLoginBindingModel", userLoginBindingModel)
+                    .addFlashAttribute("userNotFound", true);
 
             return "redirect:/users/login";
         }
 
-        userService.login(userServiceModel.getId(), userServiceModel.getUsername());
+        userService.login(userServiceModel);
 
-        return "redirect:/";
-    }
-
-    @GetMapping("/register")
-    public String register() {
-        return "register";
+        return "redirect:/home";
     }
 
     @PostMapping("/register")
@@ -89,7 +84,9 @@ public class UserController {
                                   BindingResult bindingResult,
                                   RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors() ||
+                !userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
+
             redirectAttributes
                     .addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel", bindingResult);
@@ -100,7 +97,12 @@ public class UserController {
         userService.register(modelMapper
                 .map(userRegisterBindingModel, UserServiceModel.class));
 
+        return "redirect:/users/login";
+    }
 
+    @GetMapping("/logout")
+    public String logout() {
+        userService.logout();
         return "redirect:/";
     }
 }

@@ -5,6 +5,7 @@ import bg.softuni.mobilelele.service.OfferService;
 import bg.softuni.mobilelele.user.CurrentUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,5 +38,12 @@ public class OfferController {
                 offerService.isLoggedUserOwner(detailsViewModel.getSeller().getUsername()));
 
         return "details";
+    }
+
+    @DeleteMapping("/offers/{id}")
+    public String delete(@PathVariable Long id) {
+        offerService.deleteOffer(id);
+
+        return "redirect:/offers/all";
     }
 }

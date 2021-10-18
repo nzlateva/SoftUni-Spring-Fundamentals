@@ -14,4 +14,6 @@ public interface OfferService {
     OfferDetailsViewModel findById(Long id);
 
     boolean isLoggedUserOwner(String username);
+
+    void deleteOffer(Long id);
 }

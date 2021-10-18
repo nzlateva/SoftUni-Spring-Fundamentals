@@ -93,6 +93,11 @@ public class OfferServiceImpl implements OfferService {
         return currentUser.getUsername().equals(username);
     }
 
+    @Override
+    public void deleteOffer(Long id) {
+        offerRepository.deleteById(id);
+    }
+
     private OfferSummaryViewModel mapToModel(OfferEntity offerEntity) {
         return modelMapper
                 .map(offerEntity, OfferSummaryViewModel.class);

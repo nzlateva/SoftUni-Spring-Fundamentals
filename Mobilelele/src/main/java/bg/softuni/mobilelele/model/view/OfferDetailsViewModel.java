@@ -8,6 +8,7 @@ import java.time.Instant;
 
 public class OfferDetailsViewModel {
 
+    private Long id;
     private String imageUrl;
     private Integer mileage;
     private BigDecimal price;
@@ -20,6 +21,15 @@ public class OfferDetailsViewModel {
     private UserViewModel seller;
 
     public OfferDetailsViewModel() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public OfferDetailsViewModel setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getImageUrl() {
