@@ -1,7 +1,6 @@
 package bg.softuni.coffeeshop.model.view;
 
 import bg.softuni.coffeeshop.model.entity.CategoryEntity;
-import bg.softuni.coffeeshop.model.entity.enums.CategoryEnum;
 
 import java.math.BigDecimal;
 
