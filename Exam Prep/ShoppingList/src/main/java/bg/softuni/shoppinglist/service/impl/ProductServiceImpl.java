@@ -38,7 +38,8 @@ public class ProductServiceImpl implements ProductService {
         ProductEntity newEntity = productRepository.save(productEntity);
 
         return modelMapper
-                .map(newEntity, ProductServiceModel.class);
+                .map(newEntity, ProductServiceModel.class)
+                .setCategory(newEntity.getCategory().getName());
     }
 
     @Override
